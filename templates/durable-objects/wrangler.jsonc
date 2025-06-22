@@ -1,19 +1,22 @@
 {
-    "name": "django-on-workers",
+    "name": "django-on-workers-with-durable-objects",
     "main": "src/worker.py",
     "compatibility_flags": [
         "python_workers"
     ],
     "compatibility_date": "2025-04-10",
     "assets": {
-      "directory": "./staticfiles/"
+      "directory": "./staticfiles"
+    },
+    "build": {
+      "command": "python src/manage.py collectstatic --noinput"
     },
     "rules": [
         {
             "globs": [
                 "vendor/**/*.txt.gz",
                 "vendor/**/*.py",
-                "vendor/**/*.mo",
+//                "vendor/**/*.mo",  optional, but requires workers paid plan
                 "vendor/tzdata/**/"
             ],
             "type": "Data",
@@ -23,8 +26,8 @@
     "durable_objects": {
         "bindings": [
             {
-                "name": "ns",
-                "class_name": "DOClass"
+                "name": "DO_STORAGE",
+                "class_name": "DjangoDO"
             }
         ]
     },
@@ -32,7 +35,7 @@
         {
             "tag": "v1",
             "new_sqlite_classes": [
-                "DOClass"
+                "DjangoDO"
             ]
         }
     ],
