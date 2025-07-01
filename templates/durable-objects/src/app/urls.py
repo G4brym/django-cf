@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.http import JsonResponse
-from django.urls import path
+from django.urls import path, include # Added include
 from django.contrib.auth.decorators import user_passes_test
 
 def is_superuser(user):
@@ -52,4 +52,5 @@ urlpatterns = [
     # Management endpoints - secure these appropriately for your application
     path('__create_admin__/', create_admin_view, name='create_admin'),
     path('__run_migrations__/', run_migrations_view, name='run_migrations'),
+    path('', include('example_app.urls')), # Include the example_app URLs at the root
 ]
