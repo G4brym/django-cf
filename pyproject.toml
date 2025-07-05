@@ -27,6 +27,14 @@ classifiers = [
     "Programming Language :: Python :: 3.12"
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "requests",
+    "ruff",
+    "django",
+]
+
 [project.urls]
 "Homepage" = "https://github.com/G4brym/django-cf"
 "Bug Reports" = "https://github.com/G4brym/django-cf/issues"
@@ -34,3 +42,10 @@ classifiers = [
 
 [tool.setuptools]
 packages = ["django_cf", "django_cf.d1_api", "django_cf.d1_binding", "django_cf.do_binding"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
