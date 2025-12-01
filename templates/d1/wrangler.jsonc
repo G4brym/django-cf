@@ -1,36 +1,36 @@
 {
   "name": "django-on-workers-with-d1",
-  "main": "src/worker.py",
+  "main": "src/index.py",
   "compatibility_flags": [
-    "python_workers",
-    "python_workers_20250116"
+    "python_workers"
   ],
-  "compatibility_date": "2025-04-10",
+  "compatibility_date": "2025-11-30",
   "assets": {
     "directory": "./staticfiles"
   },
   "build": {
-    "command": "python src/manage.py collectstatic --noinput"
+    "command": "WORKERS_CI=1 python src/manage.py collectstatic --noinput"
   },
-  "rules": [
-    {
-      "globs": [
-        "vendor/**/*.txt.gz",
-        // "vendor/**/*.mo",  only required for enabling translations, but requires workers paid plan
-        "vendor/tzdata/**/"
-      ],
-      "type": "Data",
-      "fallthrough": true
-    }
-  ],
+  "python_modules": {
+    "exclude": [
+      "**/*.pyc",
+      "**/__pycache__",
+      "**/*.po",
+      "**/*.css",
+      "**/*.js",
+      "**/*.svg",
+      "**/*.png",
+      "**/*.jpg"
+    ]
+  },
+  "observability": {
+    "enabled": true
+  },
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "django-on-workers",
-      "database_id": "6b4c37f0-5a15-4614-81be-25052d22bc0f"
+      "database_id": "590ad313-29a0-422f-9c9e-1124d9b56ad0"
     }
-  ],
-  "observability": {
-    "enabled": true
-  }
+  ]
 }

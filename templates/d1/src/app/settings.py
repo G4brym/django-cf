@@ -83,7 +83,7 @@ if os.getenv('WORKERS_CI') == "1":
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django_cf.d1_binding',
+            'ENGINE': 'django_cf.db.backends.d1',
             # 'CLOUDFLARE_BINDING' should match the binding name in your wrangler.toml
             'CLOUDFLARE_BINDING': 'DB',
         }
@@ -115,11 +115,9 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-# Enabling translations, requires also enabling the glob "vendor/**/*.mo" in wrangler.jsonc
-# This will make your worker bigger than 3MB, thus requiring you a Workers Paid Plan
 USE_I18N = False
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
