@@ -90,14 +90,13 @@ class TestR2StorageGetBucketErrors:
 
             storage = R2Storage()
 
-            with patch.object(storage, '_import_from_javascript', None):
-                with patch('django_cf.storage.r2.R2Storage._get_bucket') as mock_get:
-                    mock_get.side_effect = Exception("Code not running inside a worker!")
+            with patch('django_cf.storage.r2.R2Storage._get_bucket') as mock_get:
+                mock_get.side_effect = Exception("Code not running inside a worker!")
 
-                    with pytest.raises(Exception) as exc_info:
-                        storage._get_bucket()
+                with pytest.raises(Exception) as exc_info:
+                    storage._get_bucket()
 
-                    assert "not running inside a worker" in str(exc_info.value)
+                assert "not running inside a worker" in str(exc_info.value)
 
 
 class TestR2StorageReadErrors:
@@ -134,7 +133,6 @@ class TestR2StorageReadErrors:
 
             storage._bucket = mock_bucket
             storage._run_sync = mock_run_sync
-            storage._import_from_javascript = MagicMock()
 
             # _get_bucket will try to use the mock
             with patch.object(storage, '_get_bucket', return_value=mock_bucket):
@@ -159,7 +157,6 @@ class TestR2StorageExistsErrors:
 
             storage._bucket = mock_bucket
             storage._run_sync = mock_run_sync
-            storage._import_from_javascript = MagicMock()
 
             with patch.object(storage, '_get_bucket', return_value=mock_bucket):
                 result = storage.exists('file.txt')
@@ -183,7 +180,6 @@ class TestR2StorageSizeErrors:
 
             storage._bucket = mock_bucket
             storage._run_sync = mock_run_sync
-            storage._import_from_javascript = MagicMock()
 
             with patch.object(storage, '_get_bucket', return_value=mock_bucket):
                 result = storage.size('file.txt')
@@ -205,7 +201,6 @@ class TestR2StorageSizeErrors:
 
             storage._bucket = mock_bucket
             storage._run_sync = mock_run_sync
-            storage._import_from_javascript = MagicMock()
 
             with patch.object(storage, '_get_bucket', return_value=mock_bucket):
                 result = storage.size('file.txt')
@@ -296,7 +291,6 @@ class TestR2StorageGetModifiedTimeErrors:
 
             storage._bucket = mock_bucket
             storage._run_sync = mock_run_sync
-            storage._import_from_javascript = MagicMock()
 
             with patch.object(storage, '_get_bucket', return_value=mock_bucket):
                 before = datetime.now()
@@ -459,7 +453,6 @@ class TestR2StorageSaveEdgeCases:
 
             storage._bucket = mock_bucket
             storage._run_sync = mock_run_sync
-            storage._import_from_javascript = MagicMock()
 
             # Create a file-like object
             content = BytesIO(b'test content')
@@ -483,7 +476,6 @@ class TestR2StorageSaveEdgeCases:
 
             storage._bucket = mock_bucket
             storage._run_sync = mock_run_sync
-            storage._import_from_javascript = MagicMock()
 
             # Create a file-like object with content_type
             content = BytesIO(b'{"key": "value"}')
@@ -519,7 +511,6 @@ class TestR2StorageListdirEdgeCases:
 
             storage._bucket = mock_bucket
             storage._run_sync = mock_run_sync
-            storage._import_from_javascript = MagicMock()
 
             with patch.object(storage, '_get_bucket', return_value=mock_bucket):
                 dirs, files = storage.listdir('')
@@ -544,7 +535,6 @@ class TestR2StorageListdirEdgeCases:
 
             storage._bucket = mock_bucket
             storage._run_sync = mock_run_sync
-            storage._import_from_javascript = MagicMock()
 
             with patch.object(storage, '_get_bucket', return_value=mock_bucket):
                 storage.listdir('uploads')
