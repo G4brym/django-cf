@@ -133,6 +133,7 @@ class TestR2StorageReadErrors:
 
             storage._bucket = mock_bucket
             storage._run_sync = mock_run_sync
+
             # _get_bucket will try to use the mock
             with patch.object(storage, '_get_bucket', return_value=mock_bucket):
                 result = storage._read('file.txt')
