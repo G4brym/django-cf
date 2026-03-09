@@ -23,6 +23,13 @@
     "publish": "python3 -m twine upload dist/*"
   },
   "devDependencies": {
-    "wrangler": "^4.22.0"
+    "wrangler": "^4.71.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "workerd"
+    ]
   }
 }
