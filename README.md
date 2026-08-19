@@ -1,3 +1,14 @@
+## This Repository Has Moved
+
+> [!IMPORTANT]
+> **`django-cf` is now officially supported and maintained by Cloudflare.**
+>
+> Development has moved to the
+> **[`cloudflare/workers-py` repository](https://github.com/cloudflare/workers-py/tree/main/packages/django-cf)**.
+>
+> This repository is archived, and all future updates will
+> be made in the new repository.
+
 # django-cf
 
 `django-cf` is a Python package that seamlessly integrates your Django applications with various Cloudflare services. Utilize the power of Cloudflare's global network for your Django projects.
