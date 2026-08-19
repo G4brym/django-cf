@@ -1,5 +1,6 @@
 import re
 import sqlparse
+from django.core.exceptions import ImproperlyConfigured
 from django.db import DatabaseError, Error, DataError, OperationalError, \
     IntegrityError, InternalError, ProgrammingError, NotSupportedError, InterfaceError
 from django.db.backends.sqlite3.base import DatabaseWrapper as SQLiteDatabaseWrapper
@@ -58,7 +59,37 @@ class CFDatabaseIntrospection(SQLiteDatabaseIntrospection):
 
 
 class CFDatabaseCreation(SQLiteDatabaseCreation):
-    pass
+    def _create_test_db(self, verbosity, autoclobber, keepdb=False):
+        """
+        Prevent accidental test runs against production Cloudflare databases.
+        
+        Cloudflare D1 and Durable Objects do not support isolated test databases
+        or transactions. Running Django tests directly against these backends will
+        DESTROY all production data because the backend connects via
+        CLOUDFLARE_DATABASE_ID (or binding), not via the NAME setting, so the
+        test runner ends up migrating and flushing the production database.
+        """
+        raise ImproperlyConfigured(
+            "\n"
+            "Running Django tests against Cloudflare D1/Durable Objects is not "
+            "supported because these backends do not support isolated test "
+            "databases or transactions.\n\n"
+            "Testing against these backends will DESTROY your production data.\n\n"
+            "To run tests safely, create a separate Django settings module for "
+            "testing and switch to a different database engine there. Example:\n\n"
+            "    # settings/test.py\n"
+            "    from .settings import *\n\n"
+            "    DATABASES = {\n"
+            "        'default': {\n"
+            "            'ENGINE': 'django.db.backends.sqlite3',\n"
+            "            'NAME': BASE_DIR / 'test_db.sqlite3',\n"
+            "        }\n"
+            "    }\n\n"
+            "Then run tests with:\n"
+            "    python manage.py test --settings=settings.test\n\n"
+            "Or point CLOUDFLARE_DATABASE_ID to a dedicated test D1 database in "
+            "your test settings module.\n"
+        )
 
 
 class CFDatabaseClient(SQLiteDatabaseClient):
